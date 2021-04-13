@@ -7,6 +7,10 @@ import org.apache.spark.sql.functions._
 object Kata1 {
 
   def main(args: Array[String]) {
+
+    val hadoopPath = System.getProperty("user.dir") + "\\src\\main\\resources\\hadoop";
+    System.setProperty("hadoop.home.dir", hadoopPath);
+
     val spark = SparkSession
       .builder()
       .appName("Spark Kata1")

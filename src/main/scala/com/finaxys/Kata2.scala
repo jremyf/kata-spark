@@ -6,6 +6,9 @@ object Kata2 {
 
   def main(args: Array[String]): Unit = {
 
+    val hadoopPath = System.getProperty("user.dir") + "\\src\\main\\resources\\hadoop";
+    System.setProperty("hadoop.home.dir", hadoopPath);
+
     val spark = SparkSession
       .builder()
       .appName("Spark Kata2")
