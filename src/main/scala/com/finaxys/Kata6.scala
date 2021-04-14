@@ -1,6 +1,5 @@
 package com.finaxys
 
-import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
 object Kata6 {
@@ -17,9 +16,22 @@ object Kata6 {
 
     val people = sparkSession.read.json("./src/main/resources/people.json")
 
-    people.show(200,false)
+    people.show(200, false)
 
     people.printSchema()
+
+    people.createOrReplaceTempView("people")
+
+    val udfToUpperCase: String => String = _.toUpperCase
+
+
+    sparkSession.sqlContext.udf.register("toUpperCase", udfToUpperCase)
+    val peoplesInUpperCase = sparkSession.sql("SELECT toUpperCase(last_name) as lastNameMaj FROM people")
+
+    peoplesInUpperCase.show(200, false)
+
+    peoplesInUpperCase.write.mode(SaveMode.Overwrite).format("parquet").save("namesAndAges.parquet")
+
 
   }
 }
